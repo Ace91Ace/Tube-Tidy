@@ -1,0 +1,13 @@
+body {
+    font-family: Arial, sans-serif;
+    padding: 10px;
+  }
+  h1 {
+    font-size: 18px;
+    margin-bottom: 10px;
+  }
+  label {
+    display: block;
+    margin: 5px 0;
+  }
+  
