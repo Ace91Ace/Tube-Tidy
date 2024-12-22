@@ -3,6 +3,7 @@ document.getElementById('dark-mode').addEventListener('change', (event) => {
   const theme = event.target.checked ? 'dark' : 'light';
   document.documentElement.setAttribute('data-theme', theme);
   chrome.storage.local.set({ theme });
+  updateDarkMode(theme);
 });
 
 // Load preferences and apply settings
@@ -19,6 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       if (result.theme === 'dark') {
         document.documentElement.setAttribute('data-theme', 'dark');
+        updateDarkMode('dark');
       }
     }
   );
@@ -38,3 +40,14 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 });
+
+// Function to update background and text color when dark mode is toggled
+function updateDarkMode(theme) {
+  if (theme === 'dark') {
+    document.body.style.backgroundColor = '#1e1e1e';  // Dark background
+    document.body.style.color = 'white';  // White text
+  } else {
+    document.body.style.backgroundColor = '#f4f4f4';  // Light background
+    document.body.style.color = 'black';  // Black text
+  }
+}
