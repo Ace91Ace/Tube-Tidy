@@ -1,32 +1,22 @@
 {
   "manifest_version": 3,
   "name": "Tube Tidy",
-  "description": "A Chrome extension to reduce distractions while working on YouTube.",
-  "version": "1.0",
-  "permissions": [
-    "storage",
-    "activeTab"
-  ],
-  "background": {
-    "service_worker": "background.js"
-  },
-  "action": {
-    "default_popup": "popup.html",
-    "default_icon": {
-      "16": "icon16.png",
-      "48": "icon48.png",
-      "128": "icon128.png"
-    }
-  },
-  "content_scripts": [
-    {
-      "matches": ["*://www.youtube.com/*"],
-      "js": ["content.js"]
-    }
-  ],
+  "version": "1.1",
+  "description": "Customizable YouTube extension to hide feeds, suggestions, comments, and modify Shorts behavior.",
+  "permissions": ["storage", "activeTab", "scripting"],
   "icons": {
     "16": "icon16.png",
     "48": "icon48.png",
     "128": "icon128.png"
-  }
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": "icon48.png"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://www.youtube.com/*"],
+      "js": ["content.js"]
+    }
+  ]
 }

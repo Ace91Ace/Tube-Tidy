@@ -1,10 +1,13 @@
 body {
   font-family: Arial, sans-serif;
   padding: 10px;
-  background-color: #f4f4f4;  /* Default light mode background */
+  background-color: #f4f4f4;
   margin: 0;
   width: 280px;
-  color: black; /* Default text color */
+  color: black;
+  border: 2px solid #2196F3;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 h1 {
@@ -73,21 +76,26 @@ input:checked + .slider:before {
   transform: translateX(26px);
 }
 
-/* Dark Mode */
+/* Dark Mode Styles */
 [data-theme="dark"] {
-  background-color: #1e1e1e;  /* Dark background */
-  color: white;  /* White text */
+  background-color: #1e1e1e;
+  color: white;
 }
 
-[data-theme="dark"] h1, [data-theme="dark"] label {
-  color: white;  /* Ensuring text remains white in dark mode */
+[data-theme="dark"] h1,
+[data-theme="dark"] label {
+  color: white;
 }
 
-/* Footer */
 footer {
   margin-top: 20px;
   text-align: center;
   font-size: 12px;
+  color: black;
+}
+
+[data-theme="dark"] footer {
+  color: white;
 }
 
 footer a {

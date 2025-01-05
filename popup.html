@@ -1,74 +1,59 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Tube Tidy</title>
-    <link rel="stylesheet" href="styles.css" />
-  </head>
-  <body>
-    <h1>Tube Tidy</h1>
-
-    <!-- Dark Mode Toggle -->
-    <div class="slider-container">
-      <label for="dark-mode">Dark Mode</label>
-      <label class="switch">
-        <input type="checkbox" id="dark-mode" />
-        <span class="slider"></span>
-      </label>
-    </div>
-
-    <!-- Feature Toggles -->
-    <div id="feature-sliders">
-      <div class="slider-container">
-        <label for="homepage-feed">Hide Homepage Feed</label>
-        <label class="switch">
-          <input type="checkbox" id="homepage-feed" />
-          <span class="slider"></span>
-        </label>
-      </div>
-
-      <div class="slider-container">
-        <label for="end-suggestions">Hide Video End Suggestions</label>
-        <label class="switch">
-          <input type="checkbox" id="end-suggestions" />
-          <span class="slider"></span>
-        </label>
-      </div>
-
-      <div class="slider-container">
-        <label for="sidebar-suggestions">Hide Sidebar Suggestions</label>
-        <label class="switch">
-          <input type="checkbox" id="sidebar-suggestions" />
-          <span class="slider"></span>
-        </label>
-      </div>
-
-      <div class="slider-container">
-        <label for="comments">Hide Comments</label>
-        <label class="switch">
-          <input type="checkbox" id="comments" />
-          <span class="slider"></span>
-        </label>
-      </div>
-
-      <div class="slider-container">
-        <label for="shorts">View Shorts as Regular Video</label>
-        <label class="switch">
-          <input type="checkbox" id="shorts" />
-          <span class="slider"></span>
-        </label>
-      </div>
-    </div>
-
-    <!-- Footer -->
-    <footer>
-      <p>Contact: <a href="mailto:nagavamshi91@gmail.com">nagavamshi91@gmail.com</a></p>
-      <p>
-        GitHub: <a href="https://github.com/Ace91Ace" target="_blank">Ace91Ace</a>
-      </p>
-    </footer>
-
-    <script src="popup.js"></script>
-  </body>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="styles.css">
+  <title>Tube Tidy</title>
+</head>
+<body>
+  <h1>Tube Tidy</h1>
+  <div class="slider-container">
+    <label for="homepage-feed">Hide Homepage Feed</label>
+    <label class="switch">
+      <input type="checkbox" id="homepage-feed">
+      <span class="slider"></span>
+    </label>
+  </div>
+  <div class="slider-container">
+    <label for="end-suggestions">Hide End Suggestions</label>
+    <label class="switch">
+      <input type="checkbox" id="end-suggestions">
+      <span class="slider"></span>
+    </label>
+  </div>
+  <div class="slider-container">
+    <label for="sidebar-suggestions">Hide Sidebar Suggestions</label>
+    <label class="switch">
+      <input type="checkbox" id="sidebar-suggestions">
+      <span class="slider"></span>
+    </label>
+  </div>
+  <div class="slider-container">
+    <label for="comments">Hide Comments</label>
+    <label class="switch">
+      <input type="checkbox" id="comments">
+      <span class="slider"></span>
+    </label>
+  </div>
+  <div class="slider-container">
+    <label for="shorts">Modify Shorts</label>
+    <label class="switch">
+      <input type="checkbox" id="shorts">
+      <span class="slider"></span>
+    </label>
+  </div>
+  <div class="slider-container">
+    <label for="dark-mode">Dark Mode</label>
+    <label class="switch">
+      <input type="checkbox" id="dark-mode">
+      <span class="slider"></span>
+    </label>
+  </div>
+  <footer>
+    <p>Built with ❤️ for distraction-free YouTube.</p>
+    <p>Contact: <a href="mailto:nagavamshi91@gmail.com">nagavamshi91@gmail.com</a></p>
+  </footer>
+  <script src="popup.js"></script>
+</body>
 </html>
