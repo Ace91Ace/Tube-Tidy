@@ -1,85 +1,76 @@
-function applySettings() {
-  chrome.storage.local.get(
-    ['homepageFeed', 'endSuggestions', 'sidebarSuggestions', 'comments', 'shorts'],
-    (settings) => {
-      // Hide homepage feed
-      if (settings.homepageFeed && window.location.pathname === "/") {
-        document.querySelector('#contents')?.setAttribute('hidden', true);
-      }
+// Function to handle Shorts URL redirection and trigger page reload
+function handleShortsRedirection() {
+  if (window.location.pathname.startsWith('/shorts/')) {
+    const videoId = window.location.pathname.split('/')[2]; // Extract video ID
+    if (videoId) {
+      // Redirect to regular video URL
+      const newUrl = `https://www.youtube.com/watch?v=${videoId}`;
+      window.location.replace(newUrl); // Redirect to the new URL
 
-      // Hide video end suggestions
-      if (settings.endSuggestions) {
-        document.querySelector('#related')?.setAttribute('hidden', true);
-      }
-
-      // Hide sidebar suggestions
-      if (settings.sidebarSuggestions) {
-        document.querySelector('#secondary')?.setAttribute('hidden', true);
-      }
-
-      // Hide comments
-      if (settings.comments) {
-        document.querySelector('#comments')?.setAttribute('hidden', true);
-      }
-
-      // Handle Shorts as a normal video
-      if (settings.shorts) {
-        handleShortsRedirectAndDisableScrolling();
-      }
+      // Reload the page after redirection
+      window.location.reload(); // Reload page to apply the new URL
     }
-  );
-}
-
-// Function to handle Shorts redirection and disabling scrolling
-function handleShortsRedirectAndDisableScrolling() {
-  // If we're on a Shorts video, redirect to the normal video page
-  if (window.location.pathname.startsWith("/shorts/")) {
-    redirectToNormalVideo();
-  }
-
-  // Observe changes in the URL (for when you switch between shorts videos)
-  const observer = new MutationObserver(() => {
-    if (window.location.pathname.startsWith("/shorts/")) {
-      redirectToNormalVideo();
-    }
-  });
-
-  // Start observing for changes in the URL
-  observer.observe(document, { childList: true, subtree: true });
-  
-  // Disable scrolling/swiping to the next video
-  disableShortsSwiping();
-}
-
-// Redirect Shorts to normal video format
-function redirectToNormalVideo() {
-  const currentPath = window.location.pathname;
-  if (currentPath.startsWith('/shorts/')) {
-    const videoID = currentPath.split("/shorts/")[1];
-    const newURL = `/watch?v=${videoID}`;
-    window.location.replace(newURL); // Redirect to the normal video format
   }
 }
 
-// Disable Shorts swiping to the next video
-function disableShortsSwiping() {
-  // Find the element that holds the video
-  const videoElement = document.querySelector('ytd-player');
-
-  if (videoElement) {
-    // Remove the style that allows swiping
-    videoElement.style.overflow = 'hidden';
-
-    // Remove elements related to video swiping
-    const reelContainer = document.querySelector('ytd-reel-player');
-    if (reelContainer) {
-      reelContainer.style.pointerEvents = 'none';  // Disable interaction for swiping
-    }
-
-    // Disable scrolling behavior on the page
-    document.body.style.overflow = 'hidden';
+// Function to hide homepage feed based on user preference
+function hideHomepageFeed(isEnabled) {
+  if (isEnabled && window.location.pathname === '/') {
+    document.getElementById('primary').style.display = 'none';
+  } else {
+    document.getElementById('primary').style.display = 'block';
   }
 }
 
-new MutationObserver(applySettings).observe(document, { childList: true, subtree: true });
-window.onload = applySettings;
+// Function to hide video end suggestions
+function hideEndSuggestions(isEnabled) {
+  const endScreen = document.querySelector('.ytp-ce-element');
+  if (endScreen) {
+    endScreen.style.display = isEnabled ? 'none' : 'block';
+  }
+}
+
+// Function to hide sidebar suggestions
+function hideSidebarSuggestions(isEnabled) {
+  const sidebar = document.getElementById('secondary');
+  if (sidebar) {
+    sidebar.style.display = isEnabled ? 'none' : 'block';
+  }
+}
+
+// Function to hide comments
+function hideComments(isEnabled) {
+  const commentsSection = document.getElementById('comments');
+  if (commentsSection) {
+    commentsSection.style.display = isEnabled ? 'none' : 'block';
+  }
+}
+
+// Load settings from storage
+chrome.storage.local.get(
+  ['homepageFeed', 'endSuggestions', 'sidebarSuggestions', 'comments', 'shorts'],
+  (result) => {
+    hideHomepageFeed(result.homepageFeed || false);
+    hideEndSuggestions(result.endSuggestions || false);
+    hideSidebarSuggestions(result.sidebarSuggestions || false);
+    hideComments(result.comments || false);
+
+    // Apply Shorts redirection if necessary
+    if (result.shorts) {
+      handleShortsRedirection();
+    }
+
+    // Watch for URL changes and reapply the changes dynamically
+    let lastUrl = location.href;
+    const observer = new MutationObserver(() => {
+      const currentUrl = location.href;
+      if (currentUrl !== lastUrl) {
+        lastUrl = currentUrl;
+        if (result.shorts && currentUrl.includes('/shorts/')) {
+          handleShortsRedirection(); // Apply redirection and reload on URL change
+        }
+      }
+    });
+    observer.observe(document.body, { childList: true, subtree: true });
+  }
+);
