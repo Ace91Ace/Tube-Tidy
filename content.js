@@ -3,16 +3,24 @@ function applySettings() {
     ['homepageFeed', 'endSuggestions', 'sidebarSuggestions', 'comments', 'shorts'],
     (settings) => {
       // Hide homepage feed
-      if (settings.homepageFeed) document.querySelector('#contents')?.setAttribute('hidden', true);
+      if (settings.homepageFeed && window.location.pathname === "/") {
+        document.querySelector('#contents')?.setAttribute('hidden', true);
+      }
 
       // Hide video end suggestions
-      if (settings.endSuggestions) hideEndSuggestions();
+      if (settings.endSuggestions) {
+        document.querySelector('#related')?.setAttribute('hidden', true);
+      }
 
       // Hide sidebar suggestions
-      if (settings.sidebarSuggestions) document.querySelector('#secondary')?.setAttribute('hidden', true);
+      if (settings.sidebarSuggestions) {
+        document.querySelector('#secondary')?.setAttribute('hidden', true);
+      }
 
       // Hide comments
-      if (settings.comments) document.querySelector('#comments')?.setAttribute('hidden', true);
+      if (settings.comments) {
+        document.querySelector('#comments')?.setAttribute('hidden', true);
+      }
 
       // Handle Shorts as a normal video
       if (settings.shorts) {
@@ -22,23 +30,6 @@ function applySettings() {
   );
 }
 
-// Function to hide video end suggestions
-function hideEndSuggestions() {
-  // Hide "Up next" and other related end suggestions
-  const endScreen = document.querySelector('#related');
-  if (endScreen) {
-    endScreen.style.display = 'none';
-  }
-
-  // Dynamically monitor for any related end suggestions
-  new MutationObserver(() => {
-    const endScreenPopup = document.querySelector('#related');
-    if (endScreenPopup) {
-      endScreenPopup.style.display = 'none';
-    }
-  }).observe(document, { childList: true, subtree: true });
-}
-
 // Function to handle Shorts redirection and disabling scrolling
 function handleShortsRedirectAndDisableScrolling() {
   // If we're on a Shorts video, redirect to the normal video page
@@ -46,7 +37,7 @@ function handleShortsRedirectAndDisableScrolling() {
     redirectToNormalVideo();
   }
 
-  // Observe changes in the URL (for when you switch between Shorts videos)
+  // Observe changes in the URL (for when you switch between shorts videos)
   const observer = new MutationObserver(() => {
     if (window.location.pathname.startsWith("/shorts/")) {
       redirectToNormalVideo();
@@ -54,8 +45,8 @@ function handleShortsRedirectAndDisableScrolling() {
   });
 
   // Start observing for changes in the URL
-  observer.observe(document.body, { childList: true, subtree: true });
-
+  observer.observe(document, { childList: true, subtree: true });
+  
   // Disable scrolling/swiping to the next video
   disableShortsSwiping();
 }
@@ -66,31 +57,29 @@ function redirectToNormalVideo() {
   if (currentPath.startsWith('/shorts/')) {
     const videoID = currentPath.split("/shorts/")[1];
     const newURL = `/watch?v=${videoID}`;
-    console.log("Redirecting to: ", newURL);
     window.location.replace(newURL); // Redirect to the normal video format
   }
 }
 
-// Disable Shorts swiping to the next video by removing swipe elements
+// Disable Shorts swiping to the next video
 function disableShortsSwiping() {
-  const reelContainer = document.querySelector('ytd-reel-player');
+  // Find the element that holds the video
+  const videoElement = document.querySelector('ytd-player');
 
-  if (reelContainer) {
-    // Disable swipe interactions by making the element non-interactive
-    reelContainer.style.pointerEvents = 'none';
-    reelContainer.style.overflow = 'hidden';
+  if (videoElement) {
+    // Remove the style that allows swiping
+    videoElement.style.overflow = 'hidden';
 
-    // Also, disable body scrolling to prevent the page from scrolling
-    document.body.style.overflow = 'hidden';
-
-    // Remove elements associated with the swipe navigation behavior
-    const nextButton = document.querySelector('button[aria-label="Next"]');
-    if (nextButton) {
-      nextButton.style.display = 'none'; // Hide "Next" button
+    // Remove elements related to video swiping
+    const reelContainer = document.querySelector('ytd-reel-player');
+    if (reelContainer) {
+      reelContainer.style.pointerEvents = 'none';  // Disable interaction for swiping
     }
+
+    // Disable scrolling behavior on the page
+    document.body.style.overflow = 'hidden';
   }
 }
 
-// Observe changes in the DOM and apply settings when necessary
 new MutationObserver(applySettings).observe(document, { childList: true, subtree: true });
 window.onload = applySettings;
